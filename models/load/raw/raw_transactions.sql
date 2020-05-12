@@ -1,17 +1,17 @@
-{{config(materialized='view', enabled=true, tags='raw')}}
+{{config(enabled=true, tags='raw')}}
 
 select
-    b.O_ORDERKEY as ORDER_ID,
-    b.O_CUSTKEY as CUSTOMER_ID,
-    b.O_ORDERDATE as ORDER_DATE,
-    DATEADD(DAY, 20, b.O_ORDERDATE) AS TRANSACTION_DATE,
-    TO_NUMBER(RPAD(CONCAT(b.O_ORDERKEY, b.O_CUSTKEY, TO_CHAR(b.O_ORDERDATE, 'YYYYMMDD')),  24, '0')) AS TRANSACTION_NUMBER,
-    b.O_TOTALPRICE as AMOUNT,
-    CAST(
-    CASE ABS(MOD(RANDOM(1), 2)) + 1
-        WHEN 1 THEN 'DR'
-        WHEN 2 THEN 'CR'
-    END AS VARCHAR(2)) AS TYPE
-from SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.ORDERS as b
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.CUSTOMER as c on b.O_CUSTKEY = c.C_CUSTKEY
-where b.O_ORDERDATE = {{var("date")}}
+    b.orderkey as order_id,
+    b.custkey as customer_id,
+    b.orderdate as order_date,
+    {{ dbt_utils.dateadd(datepart='day', interval=20, from_date_or_timestamp="b.orderdate") }}  as transaction_date,
+    cast(rpad(concat(b.orderkey, b.custkey, format_date('%d%m%y', b.orderdate)),  24, '0') as numeric) as transaction_number, -- todo: adapt for cross-db
+    b.totalprice as amount,
+    cast(
+    case abs(mod(cast(rand() as numeric), 2)) + 1   -- todo: adapt for cross-db
+        when 1 then 'DR'
+        when 2 then 'CR'
+    end as {{ dbt_utils.type_string() }}) as type
+from {{ source('tpch', 'orders') }} as b
+left join {{ source('tpch', 'customer') }} as c on b.custkey = c.custkey
+where b.orderdate = {{var("date")}}

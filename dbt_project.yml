@@ -297,9 +297,9 @@ models:
         enabled: true
         materialized: view
       raw:
-        schema: "RAW"
+        schema: "raw"
         enabled: true
-        materialized: incremental
+        materialized: table
       t_links:
         enabled: true
         t_link_transactions:
@@ -318,5 +318,5 @@ models:
             src_ldts: 'LOADDATE'
             src_source: 'SOURCE'
   vars:
-    date: TO_DATE('1992-01-08')
-    hash: 'SHA'
+    date: date('1992-01-08')  # todo: adapt for cross-db
+    hash: 'MD5' # not configurable

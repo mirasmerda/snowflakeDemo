@@ -1,50 +1,50 @@
-{{config(materialized='view', enabled=true, tags='raw')}}
+{{config(enabled=true, tags='raw')}}
 
 select
-    a.L_ORDERKEY as ORDERKEY,
-    a.L_PARTKEY as PARTKEY ,
-    a.L_SUPPKEY as SUPPLIERKEY,
-    a.L_LINENUMBER as LINENUMBER,
-    a.L_QUANTITY as QUANTITY,
-    a.L_EXTENDEDPRICE as EXTENDEDPRICE,
-    a.L_DISCOUNT as DISCOUNT,
-    a.L_TAX as TAX,
-    a.L_RETURNFLAG as RETURNFLAG,
-    a.L_LINESTATUS as LINESTATUS,
-    case when a.L_SHIPDATE > {{var("date")}} then null else a.L_SHIPDATE end as SHIPDATE,
-    case when a.L_COMMITDATE > {{var("date")}}  then null else a.L_COMMITDATE end as COMMITDATE,
-    case when a.L_RECEIPTDATE > {{var("date")}}  then null else a.L_RECEIPTDATE end as RECEIPTDATE,
-    a.L_SHIPINSTRUCT as SHIPINSTRUCT,
-    a.L_SHIPMODE as SHIPMODE,
-    a.L_COMMENT as LINE_COMMENT,
-    b.O_CUSTKEY as CUSTOMERKEY,
-    b.O_ORDERSTATUS as ORDERSTATUS,
-    b.O_TOTALPRICE as TOTALPRICE,
-    b.O_ORDERDATE as ORDERDATE,
-    b.O_ORDERPRIORITY as ORDERPRIORITY,
-    b.O_CLERK as CLERK,
-    b.O_SHIPPRIORITY as SHIPPRIORITY,
-    b.O_COMMENT as ORDER_COMMENT,
-    c.C_NAME as CUSTOMER_NAME,
-    c.C_ADDRESS as CUSTOMER_ADDRESS,
-    c.C_NATIONKEY as CUSTOMER_NATIONKEY,
-    c.C_PHONE as CUSTOMER_PHONE,
-    c.C_ACCTBAL as CUSTOMER_ACCBAL,
-    c.C_MKTSEGMENT as CUSTOMER_MKTSEGMENT,
-    c.C_COMMENT as CUSTOMER_COMMENT,
-    d.N_NAME as CUSTOMER_NATION_NAME,
-    d.N_REGIONKEY as CUSTOMER_REGIONKEY,
-    d.N_COMMENT as CUSTOMER_NATION_COMMENT,
-    e.R_NAME as CUSTOMER_REGION_NAME,
-    e.R_COMMENT as CUSTOMER_REGION_COMMENT
-from SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.ORDERS as b
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.LINEITEM as a on a.L_ORDERKEY=b.O_ORDERKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.CUSTOMER as c on b.O_CUSTKEY = c.C_CUSTKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.NATION as d on c.C_NATIONKEY = d.N_NATIONKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.REGION as e on d.N_REGIONKEY = e.R_REGIONKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.PART as g on a.L_PARTKEY = g.P_PARTKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.SUPPLIER as h on a.L_SUPPKEY = h.S_SUPPKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.NATION as j on h.S_NATIONKEY = j.N_NATIONKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.REGION as k on j.N_REGIONKEY = k.R_REGIONKEY
+    a.orderkey as orderkey,
+    a.partkey as partkey ,
+    a.suppkey as supplierkey,
+    a.linenumber as linenumber,
+    a.quantity as quantity,
+    a.extendedprice as extendedprice,
+    a.discount as discount,
+    a.tax as tax,
+    a.returnflag as returnflag,
+    a.linestatus as linestatus,
+    case when a.shipdate > {{var("date")}} then null else a.shipdate end as shipdate,
+    case when a.commitdate > {{var("date")}}  then null else a.commitdate end as commitdate,
+    case when a.receiptdate > {{var("date")}}  then null else a.receiptdate end as receiptdate,
+    a.shipinstruct as shipinstruct,
+    a.shipmode as shipmode,
+    a.comment as line_comment,
+    b.custkey as customerkey,
+    b.orderstatus as orderstatus,
+    b.totalprice as totalprice,
+    b.orderdate as orderdate,
+    b.orderpriority as orderpriority,
+    b.clerk as clerk,
+    b.shippriority as shippriority,
+    b.comment as order_comment,
+    c.name as customer_name,
+    c.address as customer_address,
+    c.nationkey as customer_nationkey,
+    c.phone as customer_phone,
+    c.acctbal as customer_accbal,
+    c.mktsegment as customer_mktsegment,
+    c.comment as customer_comment,
+    d.name as customer_nation_name,
+    d.regionkey as customer_regionkey,
+    d.comment as customer_nation_comment,
+    e.name as customer_region_name,
+    e.comment as customer_region_comment
+from {{ source('tpch', 'orders') }} as b
+left join {{ source('tpch', 'lineitem') }} as a on a.orderkey=b.orderkey
+left join {{ source('tpch', 'customer') }} as c on b.custkey = c.custkey
+left join {{ source('tpch', 'nation') }} as d on c.nationkey = d.nationkey
+left join {{ source('tpch', 'region') }} as e on d.regionkey = e.regionkey
+left join {{ source('tpch', 'part') }} as g on a.partkey = g.partkey
+left join {{ source('tpch', 'supplier') }} as h on a.suppkey = h.suppkey
+left join {{ source('tpch', 'nation') }} as j on h.nationkey = j.nationkey
+left join {{ source('tpch', 'region') }} as k on j.regionkey = k.regionkey
 
-where b.O_ORDERDATE = {{var("date")}}
+where b.orderdate = {{var("date")}}

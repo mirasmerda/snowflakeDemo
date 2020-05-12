@@ -1,34 +1,34 @@
-{{ config(materialized='view', enabled=true, tags='raw')}}
+{{ config(enabled=true, tags='raw')}}
 
 select
-  a.PS_PARTKEY as PARTKEY
-, a.PS_SUPPKEY as SUPPLIERKEY
-, a.PS_AVAILQTY as AVAILQTY
-, a.PS_SUPPLYCOST as SUPPLYCOST
-, a.PS_COMMENT as PART_SUPPLY_COMMENT
-, b.S_NAME as SUPPLIER_NAME
-, b.S_ADDRESS as SUPPLIER_ADDRESS
-, b.S_NATIONKEY as SUPPLIER_NATION_KEY
-, b.S_PHONE as SUPPLIER_PHONE
-, b.S_ACCTBAL as SUPPLIER_ACCTBAL
-, b.S_COMMENT as SUPPLIER_COMMENT
-, c.P_NAME as PART_NAME
-, c.P_MFGR as PART_MFGR
-, c.P_BRAND as PART_BRAND
-, c.P_TYPE as PART_TYPE
-, c.P_SIZE as PART_SIZE
-, c.P_CONTAINER as PART_CONTAINER
-, c.P_RETAILPRICE as PART_RETAILPRICE
-, c.P_COMMENT as PART_COMMENT
-, d.N_NAME as SUPPLIER_NATION_NAME
-, d.N_COMMENT as SUPPLIER_NATION_COMMENT
-, d.N_REGIONKEY as SUPPLIER_REGION_KEY
-, e.R_NAME as SUPPLIER_REGION_NAME
-, e.R_COMMENT as SUPPLIER_REGION_COMMENT
-from SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.PARTSUPP as a
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.SUPPLIER as b on a.PS_SUPPKEY=b.S_SUPPKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.PART as c on a.PS_PARTKEY=c.P_PARTKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.NATION as d on b.S_NATIONKEY=d.N_NATIONKEY
-left join SNOWFLAKE_SAMPLE_DATA.TPCH_SF10.REGION as e on d.N_REGIONKEY=e.R_REGIONKEY
-join {{ ref('raw_orders') }} as f on a.PS_PARTKEY = f.PARTKEY and a.PS_SUPPKEY=f.SUPPLIERKEY
-order by a.PS_PARTKEY, a.PS_SUPPKEY
+  a.partkey as partkey
+, a.suppkey as supplierkey
+, a.availqty as availqty
+, a.supplycost as supplycost
+, a.comment as part_supply_comment
+, b.name as supplier_name
+, b.address as supplier_address
+, b.nationkey as supplier_nation_key
+, b.phone as supplier_phone
+, b.acctbal as supplier_acctbal
+, b.comment as supplier_comment
+, c.name as part_name
+, c.mfgr as part_mfgr
+, c.brand as part_brand
+, c.type as part_type
+, c.size as part_size
+, c.container as part_container
+, c.retailprice as part_retailprice
+, c.comment as part_comment
+, d.name as supplier_nation_name
+, d.comment as supplier_nation_comment
+, d.regionkey as supplier_region_key
+, e.name as supplier_region_name
+, e.comment as supplier_region_comment
+from {{ source('tpch', 'partsupp') }} as a
+left join {{ source('tpch', 'supplier') }} as b on a.suppkey=b.suppkey
+left join {{ source('tpch', 'part') }} as c on a.partkey=c.partkey
+left join {{ source('tpch', 'nation') }} as d on b.nationkey=d.nationkey
+left join {{ source('tpch', 'region') }} as e on d.regionkey=e.regionkey
+join {{ ref('raw_orders') }} as f on a.partkey = f.partkey and a.suppkey=f.supplierkey
+order by a.partkey, a.suppkey
