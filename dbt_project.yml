@@ -20,68 +20,68 @@ target-path: target
 models:
   snowflakeDemoDev:
     load:
-      schema: "VLT"
+      schema: "vlt"
       enabled: true
-      materialized: incremental
+      materialized: view
       hubs:
         enabled: true
         hub_customer:
           vars:
             source: 'v_stg_orders'
-            src_pk: 'CUSTOMER_PK'
-            src_nk: 'CUSTOMER_KEY'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+            src_pk: 'customer_pk'
+            src_nk: 'customer_key'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         hub_lineitem:
           vars:
             source: 'v_stg_orders'
-            src_pk: 'LINEITEM_PK'
-            src_nk: 'LINEITEM_KEY'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+            src_pk: 'lineitem_pk'
+            src_nk: 'lineitem_key'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         hub_nation:
           vars:
             source:
               - 'v_stg_orders'
               - 'v_stg_inventory'
-            src_pk: 'NATION_PK'
-            src_nk: 'NATION_KEY'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+            src_pk: 'nation_pk'
+            src_nk: 'nation_key'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         hub_order:
           vars:
             source: 'v_stg_orders'
-            src_pk: 'ORDER_PK'
-            src_nk: 'ORDER_KEY'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+            src_pk: 'order_pk'
+            src_nk: 'order_key'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         hub_part:
           vars:
             source:
               - 'v_stg_orders'
               - 'v_stg_inventory'
-            src_pk: 'PART_PK'
-            src_nk: 'PART_KEY'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+            src_pk: 'part_pk'
+            src_nk: 'part_key'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         hub_region:
           vars:
             source:
               - 'v_stg_orders'
               - 'v_stg_inventory'
-            src_pk: 'REGION_PK'
-            src_nk: 'REGION_KEY'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+            src_pk: 'region_pk'
+            src_nk: 'region_key'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         hub_supplier:
           vars:
             source:
               - 'v_stg_orders'
               - 'v_stg_inventory'
-            src_pk: 'SUPPLIER_PK'
-            src_nk: 'SUPPLIER_KEY'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+            src_pk: 'supplier_pk'
+            src_nk: 'supplier_key'
+            src_ldts: 'loaddate'
+            src_source: 'source'
       links:
         enabled: true
         link_customer_nation:
