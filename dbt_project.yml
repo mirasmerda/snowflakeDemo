@@ -293,7 +293,7 @@ models:
             src_ldts: 'LOADDATE'
             src_source: 'SOURCE'
       stage:
-        schema: "STG"
+        schema: "stg"
         enabled: true
         materialized: view
       raw:

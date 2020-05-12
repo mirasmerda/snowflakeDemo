@@ -1,31 +1,31 @@
-{{- config(materialized='view', schema='STG', enabled=true, tags='stage') -}}
+{{- config(schema='stg', enabled=true, tags='stage') -}}
 
 {%- set source_table = ref('raw_inventory') -%}
 
-{{ dbtvault.multi_hash([('SUPPLIERKEY', 'SUPPLIER_PK'),
-('SUPPLIER_NATION_KEY', 'SUPPLIER_NATION_PK'),
-('SUPPLIER_REGION_KEY', 'SUPPLIER_REGION_PK'),
-('SUPPLIER_NATION_KEY', 'NATION_PK'),
-('SUPPLIER_REGION_KEY', 'REGION_PK'),
-(['SUPPLIER_NATION_KEY', 'SUPPLIER_REGION_KEY'], 'NATION_REGION_PK'),
-(['SUPPLIERKEY', 'SUPPLIER_NATION_KEY'], 'LINK_SUPPLIER_NATION_PK'),
-('PARTKEY', 'PART_PK'),
-(['PARTKEY', 'SUPPLIERKEY'], 'INVENTORY_PK'),
-(['SUPPLIERKEY', 'SUPPLIER_ACCTBAL', 'SUPPLIER_ADDRESS', 'SUPPLIER_PHONE', 'SUPPLIER_COMMENT', 'SUPPLIER_NAME'], 'SUPPLIER_HASHDIFF', true),
-(['PARTKEY', 'PART_BRAND', 'PART_COMMENT', 'PART_CONTAINER', 'PART_MFGR', 'PART_NAME', 'PART_RETAILPRICE', 'PART_SIZE', 'PART_TYPE'], 'PART_HASHDIFF', true),
-(['SUPPLIER_REGION_KEY', 'SUPPLIER_REGION_COMMENT', 'SUPPLIER_REGION_NAME'], 'SUPPLIER_REGION_HASHDIFF', true),
-(['SUPPLIER_NATION_KEY', 'SUPPLIER_NATION_COMMENT', 'SUPPLIER_NATION_NAME'], 'SUPPLIER_NATION_HASHDIFF', true),
-(['PARTKEY', 'SUPPLIERKEY', 'AVAILQTY', 'SUPPLYCOST', 'PART_SUPPLY_COMMENT'], 'INVENTORY_HASHDIFF', true)]) -}},
+{{ dbtvault.multi_hash([('supplierkey', 'supplier_pk'),
+('supplier_nation_key', 'supplier_nation_pk'),
+('supplier_region_key', 'supplier_region_pk'),
+('supplier_nation_key', 'nation_pk'),
+('supplier_region_key', 'region_pk'),
+(['supplier_nation_key', 'supplier_region_key'], 'nation_region_pk'),
+(['supplierkey', 'supplier_nation_key'], 'link_supplier_nation_pk'),
+('partkey', 'part_pk'),
+(['partkey', 'supplierkey'], 'inventory_pk'),
+(['supplierkey', 'supplier_acctbal', 'supplier_address', 'supplier_phone', 'supplier_comment', 'supplier_name'], 'supplier_hashdiff', true),
+(['partkey', 'part_brand', 'part_comment', 'part_container', 'part_mfgr', 'part_name', 'part_retailprice', 'part_size', 'part_type'], 'part_hashdiff', true),
+(['supplier_region_key', 'supplier_region_comment', 'supplier_region_name'], 'supplier_region_hashdiff', true),
+(['supplier_nation_key', 'supplier_nation_comment', 'supplier_nation_name'], 'supplier_nation_hashdiff', true),
+(['partkey', 'supplierkey', 'availqty', 'supplycost', 'part_supply_comment'], 'inventory_hashdiff', true)]) -}},
 
 {{ dbtvault.add_columns(source_table,
-[('SUPPLIER_NATION_KEY', 'SUPPLIER_NATIONKEY'),
-('SUPPLIER_NATION_KEY', 'NATION_KEY'),
-('SUPPLIER_REGION_KEY', 'SUPPLIER_REGIONKEY'),
-('SUPPLIER_REGION_KEY', 'REGION_KEY'),
-('SUPPLIERKEY', 'SUPPLIER_KEY'),
-('PARTKEY', 'PART_KEY'),
-(var('date'), 'LOADDATE'),
-('LOADDATE', 'EFFECTIVE_FROM'),
-('!TPCH-INVENTORY', 'SOURCE')]) }}
+[('supplier_nation_key', 'supplier_nationkey'),
+('supplier_nation_key', 'nation_key'),
+('supplier_region_key', 'supplier_regionkey'),
+('supplier_region_key', 'region_key'),
+('supplierkey', 'supplier_key'),
+('partkey', 'part_key'),
+(var('date'), 'loaddate'),
+(var('date'), 'effective_from'),
+('!tpch-inventory', 'source')]) }}
 
 {{ dbtvault.from(source_table) }}
