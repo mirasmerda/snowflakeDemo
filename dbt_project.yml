@@ -1,5 +1,5 @@
 name: snowflakeDemoDev
-profile: snowflake-demoDev
+profile: my-bigquery-db
 version: '2.2'
 require-dbt-version: [">=0.14.0", "<0.17.0"]
 
