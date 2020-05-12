@@ -87,70 +87,70 @@ models:
         link_customer_nation:
           vars:
             source: 'v_stg_orders'
-            src_pk: 'LINK_CUSTOMER_NATION_PK'
+            src_pk: 'link_customer_nation_pk'
             src_fk:
-              - 'CUSTOMER_PK'
-              - 'NATION_PK'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+              - 'customer_pk'
+              - 'nation_pk'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         link_customer_order:
           vars:
             source: 'v_stg_orders'
-            src_pk: 'ORDER_CUSTOMER_PK'
+            src_pk: 'order_customer_pk'
             src_fk:
-              - 'CUSTOMER_PK'
-              - 'ORDER_PK'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+              - 'customer_pk'
+              - 'order_pk'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         link_inventory:
           vars:
             source: 'v_stg_inventory'
-            src_pk: 'INVENTORY_PK'
+            src_pk: 'inventory_pk'
             src_fk:
-              - 'SUPPLIER_PK'
-              - 'PART_PK'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+              - 'supplier_pk'
+              - 'part_pk'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         link_inventory_allocation:
           vars:
             source: 'v_stg_orders'
-            src_pk: 'INVENTORY_ALLOCATION_PK'
+            src_pk: 'inventory_allocation_pk'
             src_fk:
-              - 'PART_PK'
-              - 'SUPPLIER_PK'
-              - 'LINEITEM_PK'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+              - 'part_pk'
+              - 'supplier_pk'
+              - 'lineitem_pk'
+            src_ldts: 'loaddate'
+            src_source: 'source'
 
         link_nation_region:
           vars:
             source:
               - 'v_stg_orders'
               - 'v_stg_inventory'
-            src_pk: 'NATION_REGION_PK'
+            src_pk: 'nation_region_pk'
             src_fk:
-              - 'NATION_PK'
-              - 'REGION_PK'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+              - 'nation_pk'
+              - 'region_pk'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         link_order_lineitem:
           vars:
             source: 'v_stg_orders'
-            src_pk: 'LINK_LINEITEM_ORDER_PK'
+            src_pk: 'link_lineitem_order_pk'
             src_fk:
-              - 'ORDER_PK'
-              - 'LINEITEM_PK'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+              - 'order_pk'
+              - 'lineitem_pk'
+            src_ldts: 'loaddate'
+            src_source: 'source'
         link_supplier_nation:
           vars:
             source: 'v_stg_inventory'
-            src_pk: 'LINK_SUPPLIER_NATION_PK'
+            src_pk: 'link_supplier_nation_pk'
             src_fk:
-              - 'SUPPLIER_PK'
-              - 'NATION_PK'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+              - 'supplier_pk'
+              - 'nation_pk'
+            src_ldts: 'loaddate'
+            src_source: 'source'
       sats:
         enabled: true
         sat_inv_inventory_details:
@@ -305,18 +305,18 @@ models:
         t_link_transactions:
           vars:
             source: 'v_stg_transactions'
-            src_pk: 'TRANSACTION_PK'
+            src_pk: 'transaction_pk'
             src_fk:
-              - 'CUSTOMER_FK'
-              - 'ORDER_FK'
+              - 'customer_fk'
+              - 'order_fk'
             src_payload:
-              - 'TRANSACTION_NUMBER'
-              - 'TRANSACTION_DATE'
-              - 'TYPE'
-              - 'AMOUNT'
-            src_eff: 'EFFECTIVE_FROM'
-            src_ldts: 'LOADDATE'
-            src_source: 'SOURCE'
+              - 'transaction_number'
+              - 'transaction_date'
+              - 'type'
+              - 'amount'
+            src_eff: 'effective_from'
+            src_ldts: 'loaddate'
+            src_source: 'source'
   vars:
     date: date('1992-01-08')  # todo: adapt for cross-db
     hash: 'MD5' # not configurable
